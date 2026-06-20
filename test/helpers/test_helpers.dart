@@ -56,7 +56,7 @@ class _ColorMatcher extends Matcher {
   @override
   bool matches(dynamic item, Map matchState) {
     if (item is Color) {
-      return item.value == expectedColor.value;
+      return item.toARGB32() == expectedColor.toARGB32();
     }
     return false;
   }

@@ -17,11 +17,12 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
+  // ✅ 5 onglets : Home, History, Analytics, Alerts, Settings
   final _items = const [
     _NavItem(icon: Icons.home, label: 'Home'),
     _NavItem(icon: Icons.history, label: 'History'),
-    _NavItem(icon: Icons.analytics, label: 'Analytics'),
-    _NavItem(icon: Icons.notifications, label: 'Alerts'),
+    _NavItem(icon: Icons.analytics, label: 'Analytics'),  // ✅ Analytics
+    _NavItem(icon: Icons.notifications, label: 'Alerts'),  // ✅ Alerts
     _NavItem(icon: Icons.settings, label: 'Settings'),
   ];
 

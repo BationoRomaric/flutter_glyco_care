@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_typography.dart';
+import '../../routes/app_routes.dart';
 import 'widgets/glucose_card.dart';
 import 'widgets/medication_card.dart';
 import 'widgets/hydration_card.dart';
@@ -16,6 +17,29 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   int _selectedNavIndex = 0;
+
+  void _onNavTap(int index) {
+    setState(() => _selectedNavIndex = index);
+
+    // Navigation selon l'onglet sélectionné
+    switch (index) {
+      case 0:
+      // Déjà sur le dashboard
+        break;
+      case 1:
+        Navigator.pushNamed(context, AppRoutes.history);
+        break;
+      case 2:
+        Navigator.pushNamed(context, AppRoutes.analytics); // ✅ Onglet Analytics
+        break;
+      case 3:
+        Navigator.pushNamed(context, AppRoutes.alerts);     // ✅ Onglet Alerts
+        break;
+      case 4:
+        Navigator.pushNamed(context, AppRoutes.appSettings);
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +96,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               elevation: 8,
-                              shadowColor:
-                              AppColors.primary.withOpacity(0.3),
+                              shadowColor: AppColors.primary.withValues(alpha: 0.3),
                             ),
                           ),
                         ),
@@ -93,16 +116,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ],
             ),
           ),
-          // Bottom Navigation
+          // Bottom Navigation avec Analytics et Alerts
           Positioned(
             bottom: 0,
             left: 0,
             right: 0,
             child: BottomNavBar(
               selectedIndex: _selectedNavIndex,
-              onTap: (index) {
-                setState(() => _selectedNavIndex = index);
-              },
+              onTap: _onNavTap,
             ),
           ),
         ],
@@ -115,7 +136,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       height: 64,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
-        color: AppColors.surface.withOpacity(0.9),
+        color: AppColors.surface.withValues(alpha: 0.9),
         border: const Border(
           bottom: BorderSide(
             color: AppColors.outlineVariant,
@@ -128,14 +149,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
         children: [
           Row(
             children: [
-              // Avatar
               Container(
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(999),
                   border: Border.all(
-                    color: AppColors.primary.withOpacity(0.2),
+                    color: AppColors.primary.withValues(alpha: 0.2),
                     width: 2,
                   ),
                 ),
@@ -148,10 +168,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       return Container(
                         color: AppColors.primaryFixed,
                         child: const Center(
-                          child: Icon(
-                            Icons.person,
-                            color: AppColors.primary,
-                          ),
+                          child: Icon(Icons.person, color: AppColors.primary),
                         ),
                       );
                     },
@@ -193,17 +210,39 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ],
               ),
               const SizedBox(width: 8),
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(999),
-                ),
-                child: const Center(
-                  child: Icon(
-                    Icons.notifications_outlined,
-                    color: AppColors.primary,
-                    size: 24,
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, AppRoutes.alerts);
+                },
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                  child: Stack(
+                    children: [
+                      const Center(
+                        child: Icon(
+                          Icons.notifications_outlined,
+                          color: AppColors.primary,
+                          size: 24,
+                        ),
+                      ),
+                      // Badge de notification
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: Container(
+                          width: 8,
+                          height: 8,
+                          decoration: const BoxDecoration(
+                            color: AppColors.error,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
